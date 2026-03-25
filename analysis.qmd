@@ -43,9 +43,9 @@ cat("Number of observations:", nrow(student_data_filtered), "\n")
 # Check the structure
 str(student_data_filtered) 
 
-# ============================================
+
 # 1. UNIVARIATE ANALYSIS - Each variable vs Exam_Score
-# ============================================
+
 
 cat("=== CORRELATION ANALYSIS (Numeric Variables) ===\n")
 numeric_vars <- c("Hours_Studied", "Attendance", "Sleep_Hours", 
@@ -60,9 +60,9 @@ for(var in numeric_vars) {
 ```
 
 ```{r}
-# ============================================
+
 # 2. ANOVA F-TEST (Categorical Variables)
-# ============================================
+
 
 cat("\n=== ANOVA F-TEST (Categorical Variables) ===\n")
 cat("Higher F-statistic = stronger relationship with Exam_Score\n\n")
@@ -96,9 +96,9 @@ print(anova_results)
 ```
 
 ```{r}
-# ============================================
+
 # MEAN DIFFERENCE ANALYSIS
-# ============================================
+
 
 cat("=== PRACTICAL SIGNIFICANCE - Mean Score Differences ===\n\n")
 
@@ -201,9 +201,9 @@ cat("\nConclusion: Numeric variables have MUCH larger practical impact!\n")
 ```
 
 ```{r}
-# ============================================
+
 # FINAL SIMPLIFIED MODEL - STUDENT EXAM PERFORMANCE
-# ============================================
+
 # Based on systematic variable selection:
 # - Removed low-variance variables (Internet_Access, Learning_Disabilities, Gender)
 # - Removed non-significant variables (Sleep_Hours, Physical_Activity, School_Type)
@@ -214,15 +214,15 @@ cat("\nConclusion: Numeric variables have MUCH larger practical impact!\n")
 # Numeric (3): Attendance, Hours_Studied, Previous_Scores
 # Categorical (4): Access_to_Resources, Parental_Involvement, 
 #                  Parental_Education_Level, Peer_Influence
-# ============================================
+
 
 library(dplyr)
 library(ggplot2)
 library(car)
 
-# ============================================
+
 # 1. PREPARE FINAL DATASET
-# ============================================
+
 
 # Select only the variables we need
 final_vars <- c("Hours_Studied", "Attendance", "Previous_Scores",
@@ -237,9 +237,9 @@ cat("Variables:", ncol(student_final), "\n")
 cat("Observations:", nrow(student_final), "\n")
 str(student_final)
 
-# ============================================
+
 # 2. ENCODE CATEGORICAL VARIABLES
-# ============================================
+
 
 # Create ordinal encoding for ordered categories
 student_final$Parental_Involvement_num <- 
@@ -261,9 +261,8 @@ student_final$Parental_Education_Level <-
   factor(student_final$Parental_Education_Level,
          levels = c("High School", "College", "Postgraduate"))
 
-# ============================================
+
 # 3. BUILD LINEAR REGRESSION MODEL
-# ============================================
 
 cat("\n\n=== LINEAR REGRESSION MODEL ===\n")
 cat(strrep("=", 70), "\n\n")
@@ -278,9 +277,7 @@ final_model <- lm(Exam_Score ~ Hours_Studied + Attendance + Previous_Scores +
 summary_model <- summary(final_model)
 print(summary_model)
 
-# ============================================
 # 4. MODEL DIAGNOSTICS
-# ============================================
 
 cat("\n\n=== MODEL DIAGNOSTICS ===\n")
 cat(strrep("=", 70), "\n\n")
@@ -298,9 +295,9 @@ cat("Interpretation: Model predictions are typically off by ±",
     round(rmse, 2), "points\n\n")
 
 
-# ============================================
+
 # 6. VISUALIZATIONS
-# ============================================
+
 
 cat("\n\n=== GENERATING VISUALIZATIONS ===\n")
 
@@ -332,9 +329,9 @@ plot(final_model$fitted.values, sqrt(abs(final_model$residuals)),
 
 par(mfrow = c(1, 1))
 
-# ============================================
+
 # 7. VARIABLE IMPORTANCE VISUALIZATION
-# ============================================
+
 
 # Calculate standardized coefficients for comparison
 # Standardize numeric predictors
@@ -356,9 +353,9 @@ model_std <- lm(Exam_Score ~ Hours_Studied + Attendance + Previous_Scores +
 std_coefs <- coef(model_std)[-1]  # Remove intercept
 std_coefs_numeric <- std_coefs[1:5]  # Only numeric for fair comparison
 
-# ============================================
+
 # 8. SUMMARY REPORT
-# ============================================
+
 
 cat("\n\n")
 cat(strrep("=", 70), "\n")
@@ -386,9 +383,9 @@ cat("\n", strrep("=", 70), "\n")
 ```
 
 ```{r}
-# ============================================
+
 # DIAGNOSTIC ANALYSIS & FIXES
-# ============================================
+
 
 # 1. Check for outliers
 cat("=== CHECKING FOR OUTLIERS ===\n")
@@ -439,9 +436,9 @@ cat("3. Skewness:", round(skewness, 3),
 ```
 
 ```{r}
-# ============================================
+
 # FIX THE MODEL
-# ============================================
+
 
 cat("=== CLEANING DATA ===\n")
 
@@ -469,9 +466,8 @@ cat("Original data:", nrow(student_final), "\n")
 cat("After removing >100:", nrow(student_final_v2), "\n")
 cat("After removing outliers too:", nrow(student_final_v3), "\n\n")
 
-# ============================================
+
 # REFIT MODEL - VERSION 1 (Remove only >100)
-# ============================================
 
 cat("=== MODEL V2: Removed Impossible Values Only ===\n")
 model_v2 <- lm(Exam_Score ~ Hours_Studied + Attendance + Previous_Scores +
@@ -486,10 +482,8 @@ cat("\nR-squared:", round(summary_v2$r.squared, 4), "\n")
 cat("Adjusted R-squared:", round(summary_v2$adj.r.squared, 4), "\n")
 cat("RMSE:", round(sqrt(mean(model_v2$residuals^2)), 3), "\n")
 
-
-# ============================================
 # REFIT MODEL - VERSION 2 (Remove outliers too)
-# ============================================
+
 
 cat("\n\n=== MODEL V3: Removed Impossible Values + Outliers ===\n")
 model_v3 <- lm(Exam_Score ~ Hours_Studied + Attendance + Previous_Scores +
@@ -509,9 +503,7 @@ par(mfrow = c(2, 2))
 plot(model_v3)
 par(mfrow = c(1, 1))
 
-# ============================================
 # COMPARISON
-# ============================================
 
 cat("\n\n=== MODEL COMPARISON ===\n")
 cat(sprintf("%-30s %10s %10s %10s\n", "Metric", "Original", "V2 (>100)", "V3 (+outliers)"))
