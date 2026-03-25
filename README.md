@@ -2,7 +2,7 @@ Statistical Consulting: Student Success Factors
 This repository documents a formal statistical consulting engagement with graduate students from the Translational Data Analytics (TDA) program at The Ohio State University. The project involved transforming a broad research question into a rigorous analytical framework to identify the primary drivers of student academic performance.
 
 🎯 Project Overview
-The "clients" provided a 6,400-row Kaggle dataset and sought to understand which behavioral and environmental factors lead to better educational outcomes, measured by final exam scores. My role involved guiding the clients through the ASCCR framework (Opening, Ask, Seek, Check, Revisit, and Closing) to ensure a shared understanding of the data's provenance and analytical goals.
+The "clients" provided a 6,400-row dataset and sought to understand which behavioral and environmental factors lead to better educational outcomes, measured by final exam scores. My role involved guiding the clients through the ASCCR framework (Opening, Ask, Seek, Check, Revisit, and Closing) to ensure a shared understanding of the data's provenance and analytical goals.
 
 🛠️ Technical Workflow & Analysis
 The analysis utilized R to perform a systematic evaluation of over 20 potential predictors.
